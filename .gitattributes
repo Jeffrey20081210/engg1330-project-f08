@@ -1,0 +1,5 @@
+* text=auto
+
+*.sh eol=lf
+dockerfile eol=lf
+compose.yaml eol=lf
