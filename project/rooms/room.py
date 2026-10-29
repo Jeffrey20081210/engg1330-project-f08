@@ -21,10 +21,10 @@ class Room:
         self.objects = data.get("objects", [])
         self.spots = data.get("spots", [])
         self.exits = data.get("exits", {})
-        self.solid = set()
-        for obj in self.objects:
-            if obj.get("solid"):
-                self.solid |= art_cells(obj)
+        # Solid objects and the cells they block. An object can disappear
+        # (e.g. crates moved off the hatch), so blocking is checked per turn.
+        self.solid_objects = [(obj, art_cells(obj)) for obj in self.objects
+                              if obj.get("solid")]
 
     def tile(self, col, row):
         """The map character at (col, row); outside the map counts as wall."""
@@ -32,13 +32,20 @@ class Room:
             return self.map[row][col]
         return "#"
 
-    def walkable(self, col, row):
-        return self.tile(col, row) in WALKABLE and (col, row) not in self.solid
+    def walkable(self, col, row, state):
+        if self.tile(col, row) not in WALKABLE:
+            return False
+        return not any((col, row) in cells and condition_met(obj, state)
+                       for obj, cells in self.solid_objects)
 
     def exit_open(self, char, state):
-        """An exit is open when its required flag (if any) is set."""
-        needed = self.exits.get(char, {}).get("requires")
-        return needed is None or needed in state.flags
+        """An exit is open when its required flag (if any) is set and the
+        player has enough fragments (for the secret door)."""
+        info = self.exits.get(char, {})
+        needed = info.get("requires")
+        if needed is not None and needed not in state.flags:
+            return False
+        return len(state.fragments) >= info.get("requires_fragments", 0)
 
     def spot_at(self, x, y, state):
         """The first visible spot whose zone contains the player's feet."""
@@ -82,7 +89,7 @@ def condition_met(item, state):
     fragment = item.get("hide_fragment")
     if fragment and fragment in state.fragments:
         return False
-    return True
+    return len(state.fragments) >= item.get("needs_fragments", 0)
 
 
 def check_room_data(data):

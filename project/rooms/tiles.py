@@ -19,6 +19,8 @@ def floor_style(col, row):
 def exit_look(exit_info, is_open, col, row):
     """Exits are drawn as shutters, doors or plain openings."""
     look = exit_info.get("look", "shutter")
+    if look == "hidden":                 # the secret door looks like wall
+        return ("▒", "secret_door") if is_open else (" ", "wall")
     if is_open:
         if look == "opening":
             return " ", floor_style(col, row)

@@ -168,3 +168,185 @@ def test_every_screen_fits_80_by_24():
     for frame in range(0, 150, 3):
         intro.frame = frame
         draw(intro)
+
+
+# ----- whole runs through each route -------------------------------------
+import pytest  # noqa: E402
+
+import engine.canvas  # noqa: E402
+from engine.styles import STYLES  # noqa: E402
+from scenes.platform_zero import PlatformZeroScene  # noqa: E402
+from tests.test_route_puzzles import (safe_tunnel_keys, solve_boxes,  # noqa: E402
+                                      wire_keys)
+
+
+@pytest.fixture(autouse=True)
+def strict_styles(monkeypatch):
+    """Fail if any drawing code uses a style name that does not exist."""
+    real = engine.canvas.style
+
+    def checked(name):
+        assert name in STYLES, f"unknown style {name!r}"
+        return real(name)
+    monkeypatch.setattr(engine.canvas, "style", checked)
+
+
+def use(game, x, y, *keys):
+    """Stand at (x, y), press E, then the given keys, drawing every screen."""
+    stand_at(game, x, y)
+    press(game, "e")
+    for key in keys:
+        draw(game)
+        press(game, key)
+    draw(game)
+
+
+def close_popup(game):
+    assert isinstance(game.top, ReadOverlay)
+    press(game, "esc")
+
+
+def reach_concourse(game):
+    find_all_receipts(game)
+    open_keypad(game)
+    press(game, "9", "6", "4", "enter")
+    close_popup(game)
+    stand_at(game, 75, 8)
+    press(game, "d")
+    assert game.state.room == "concourse"
+
+
+def choose_route(game, keys, door_x, room):
+    use(game, 13, 10, *keys)
+    close_popup(game)
+    stand_at(game, door_x, 4)
+    press(game, "w")
+    assert game.state.room == room
+
+
+def finish_in_exit_hall(game, enter_from_concourse=True):
+    if enter_from_concourse:
+        stand_at(game, 39, 14)
+        press(game, "s", "s")                    # back to the concourse
+        assert game.state.room == "concourse"
+        stand_at(game, 75, 8)
+        press(game, "d")
+    assert game.state.room == "exit_hall"
+    stand_at(game, 75, 8)
+    press(game, "d")                             # shutter still down
+    assert game.state.room == "exit_hall"
+    use(game, 37, 5, "w", "w", "d", "d", "w", "d", "w", "w", "e")
+    assert "shutter_released" in game.state.flags
+    close_popup(game)
+
+
+def walk_out(game):
+    stand_at(game, 75, 8)
+    press(game, "d")
+    assert isinstance(game.top, EndingScene)
+    draw(game)
+    return game.state.ending
+
+
+def test_tech_route_escape():
+    game = start_game()
+    reach_concourse(game)
+    choose_route(game, ["3", "e", "y"], 14, "control_room")
+    stand_at(game, 67, 5)
+    press(game, "e")                             # wiring before breakers
+    assert "breakers" in game.state.messages[-1][0]
+    use(game, 10, 5, "w", "e", "s", "a", "e", "d", "d", "e", "s", "e")
+    close_popup(game)
+    use(game, 67, 5, *wire_keys())
+    close_popup(game)
+    assert game.state.has("signal_log")
+    finish_in_exit_hall(game)
+    assert walk_out(game) == "escape"
+    assert game.state.tasks_done() == 5
+
+
+def test_human_route_escape():
+    game = start_game()
+    reach_concourse(game)
+    choose_route(game, ["s", "1", "e", "y"], 39, "ticket_office")
+    use(game, 10, 5, "1", "5", "0", "4", "enter")
+    close_popup(game)
+    assert game.state.has("staff_logbook")
+    use(game, 64, 5, "d", "e")
+    close_popup(game)
+    finish_in_exit_hall(game)
+    assert walk_out(game) == "escape"
+
+
+def test_sneak_route_and_true_ending():
+    game = start_game()
+    game.state.fragments.update({"ticket_0300", "newspaper"})
+    reach_concourse(game)
+    choose_route(game, ["s", "s", "4", "e", "y"], 64, "storeroom")
+    stand_at(game, 70, 5)                        # fragment 3 on the shelf
+    press(game, "e")
+    close_popup(game)
+    assert len(game.state.fragments) == 3
+    use(game, 39, 12, *solve_boxes())
+    close_popup(game)
+    use(game, 39, 12, *safe_tunnel_keys())
+    close_popup(game)
+    finish_in_exit_hall(game, enter_from_concourse=False)
+    stand_at(game, 10, 4)
+    press(game, "w")                             # the hidden door
+    assert isinstance(game.top, PlatformZeroScene)
+    for frame in range(0, 60, 5):
+        game.frame = frame
+        draw(game)
+    press(game, "space", "b")
+    assert game.state.ending == "true_board"
+    draw(game)
+
+
+def test_hidden_door_stays_shut_without_fragments():
+    game = start_game()
+    game.state.flags.add("shutter_released")
+    game.state.room = "exit_hall"
+    stand_at(game, 10, 4)
+    press(game, "w")
+    assert isinstance(game.top, ExploreScene)
+    game.state.fragments.update({"a", "b", "c"})
+    press(game, "w")
+    assert isinstance(game.top, PlatformZeroScene)
+    press(game, "space", "l")
+    assert game.state.ending == "true_leave"
+
+
+def test_route_doors_need_their_key():
+    game = start_game()
+    game.state.room = "concourse"
+    for door_x in (14, 39, 64):
+        stand_at(game, door_x, 4)
+        press(game, "w")
+        assert game.state.room == "concourse"
+    game.state.flags.add("route_human")
+    stand_at(game, 14, 4)
+    press(game, "w")
+    assert game.state.room == "concourse"        # still the wrong door
+
+
+def test_leaving_a_puzzle_keeps_its_progress():
+    game = start_game()
+    open_keypad(game)
+    press(game, "9", "6", "esc")
+    open_keypad(game)
+    assert game.top.puzzle.entry == "96"
+
+
+def test_alarm_ending_from_the_tunnel():
+    from tests.test_route_puzzles import careless_tunnel_keys
+    game = start_game()
+    game.state.room = "storeroom"
+    game.state.flags.add("hatch_clear")
+    use(game, 39, 12)
+    before = game.state.time
+    press(game, *careless_tunnel_keys())
+    assert game.state.time == before + 5 * 60
+    press(game, *careless_tunnel_keys())
+    assert isinstance(game.top, EndingScene)
+    assert game.state.ending == "alarm"

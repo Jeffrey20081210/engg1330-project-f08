@@ -35,11 +35,11 @@ TRAIN_PALETTE = {"b": "train_body", "w": "train_window", "r": "train_stripe",
 CAR_WIDTH = len(TRAIN_ART[0])
 
 
-def draw_train(canvas, row, col, cars=2):
+def draw_train(canvas, row, col, cars=2, palette=TRAIN_PALETTE):
     """Draw a train whose left end is at col (it may be partly off screen)."""
     for car in range(cars):
         canvas.draw_art(row, col + car * (CAR_WIDTH + 1), TRAIN_ART,
-                        mask=TRAIN_MASK, palette=TRAIN_PALETTE)
+                        mask=TRAIN_MASK, palette=palette)
 
 
 _figlet_cache = {}

@@ -23,6 +23,8 @@ class GameState:
         self.fragments = set()           # hidden fragments for the true ending
         self.visited = set()             # rooms the player has entered
         self.hints_used = {}             # puzzle id -> number of hints shown
+        self.puzzles = {}                # puzzle id -> puzzle object, so a
+                                         # puzzle keeps its progress after Esc
         self.wrong_answers = 0
         self.messages = []               # list of (text, style, message no.)
         self.message_count = 0

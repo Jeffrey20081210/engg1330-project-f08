@@ -12,7 +12,7 @@ tests in tests/test_gate_code.py check both facts.
 
 from itertools import permutations
 
-from puzzles.base import SOLVED, WRONG, Puzzle
+from puzzles.base import MOVES, SOLVED, WRONG, Puzzle
 
 CODE = "964"
 
@@ -107,10 +107,8 @@ class GateCodePuzzle(Puzzle):
         return WRONG
 
     def handle_key(self, key):
-        moves = {"w": (-1, 0), "up": (-1, 0), "s": (1, 0), "down": (1, 0),
-                 "a": (0, -1), "left": (0, -1), "d": (0, 1), "right": (0, 1)}
-        if key in moves:
-            d_row, d_col = moves[key]
+        if key in MOVES:
+            d_row, d_col = MOVES[key]
             self.row = (self.row + d_row) % len(BUTTONS)
             self.col = (self.col + d_col) % len(BUTTONS[0])
             return None

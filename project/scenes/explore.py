@@ -5,14 +5,14 @@ from engine.scene import Scene
 from engine.ui import draw_key_bar, draw_messages, draw_prompt_row, draw_status_bar
 from puzzles import make_puzzle
 from puzzles.gate_code import PIECE_ORDER, receipt_lines
-from rooms import get_room
+from rooms import enter_room, get_room
 from rooms.render import draw_room
 from rooms.room import feet_cells
 from rooms.tiles import EXIT_CHARS
 from scenes.overlays import (ConfirmQuitOverlay, HelpOverlay, InventoryOverlay,
                              MapOverlay, ReadOverlay)
 from scenes.puzzle_scene import PuzzleScene
-from story.text import FRAGMENT_NAMES
+from story.text import FRAGMENT_NAMES, ITEM_NAMES
 
 DIRECTIONS = {
     "w": (0, -1, "up"), "up": (0, -1, "up"),
@@ -31,17 +31,7 @@ class ExploreScene(Scene):
         return get_room(self.state.room)
 
     def enter_room(self, room_id, position=None, facing=None):
-        """Put the player into a room (at its start if no position given)."""
-        state = self.state
-        state.room = room_id
-        room = self.room
-        state.x, state.y = position or room.data["start"]
-        if facing:
-            state.facing = facing
-        if room_id not in state.visited:
-            state.visited.add(room_id)
-            if room.data.get("first_visit"):
-                state.say(room.data["first_visit"], "info")
+        enter_room(self.state, room_id, position, facing)
 
     # ----- turns -------------------------------------------------------
     def handle_key(self, key):
@@ -76,7 +66,7 @@ class ExploreScene(Scene):
                 self.use_exit(char)
                 return
 
-        if all(room.walkable(col, row) for col, row in cells):
+        if all(room.walkable(col, row, state) for col, row in cells):
             state.x, state.y = new_x, new_y
             state.steps += 1
             state.spend(config.STEP_SECONDS)
@@ -86,12 +76,22 @@ class ExploreScene(Scene):
         state = self.state
         room = self.room
         info = room.exits[char]
-        if not room.exit_open(char, state) or info.get("to") is None:
-            state.say(info.get("locked", "It will not open."), "warn")
+        if not room.exit_open(char, state):
+            text = info.get("locked", "It will not open.")
+            if text:
+                state.say(text, "warn")
             return
         state.steps += 1
         state.spend(config.STEP_SECONDS)
-        self.enter_room(info["to"], info.get("entry"), info.get("facing"))
+        if info.get("ending"):                  # walking out to the street
+            from scenes.ending import EndingScene
+            state.ending = info["ending"]
+            self.game.reset_to(EndingScene(self.game, state.ending))
+        elif info.get("scene") == "platform0":  # the secret door
+            from scenes.platform_zero import PlatformZeroScene
+            self.game.push(PlatformZeroScene(self.game))
+        else:
+            self.enter_room(info["to"], info.get("entry"), info.get("facing"))
 
     def interact(self):
         state = self.state
@@ -100,10 +100,17 @@ class ExploreScene(Scene):
             state.say("There is nothing to use here. Walk up to something.",
                       "dim")
             return
+        needed = spot.get("requires")
+        if needed and needed not in state.flags:
+            state.say(spot.get("locked_text", "You cannot use this yet."),
+                      "warn")
+            return
         kind = spot["kind"]
         if kind == "puzzle":
             if spot["puzzle"] in state.solved:
-                state.say("You have already finished this task.", "dim")
+                state.say(spot.get("done_text",
+                                   "You have already finished this task."),
+                          "dim")
             else:
                 puzzle = make_puzzle(spot["puzzle"], state)
                 self.game.push(PuzzleScene(self.game, puzzle))
@@ -125,6 +132,11 @@ class ExploreScene(Scene):
                 state.say(f"You keep the receipt piece ({found}/"
                           f"{len(PIECE_ORDER)} found). Press I to see your "
                           "clues.", "good")
+        item = spot.get("item")
+        if item and not state.has(item):
+            state.give(item)
+            state.say(f"You take the {ITEM_NAMES[item]}. Press I to read it "
+                      "again.", "good")
         self.game.push(ReadOverlay(self.game, spot["title"], lines))
 
     def pick_fragment(self, spot):

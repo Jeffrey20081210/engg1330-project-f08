@@ -3,7 +3,7 @@
 import config
 from engine.scene import Scene
 from engine.ui import draw_key_bar, draw_messages, draw_prompt_row, draw_status_bar
-from puzzles.base import SOLVED, WRONG
+from puzzles.base import GAME_OVER, SOLVED, WRONG
 from scenes.overlays import HelpOverlay, ReadOverlay
 
 
@@ -26,13 +26,16 @@ class PuzzleScene(Scene):
             return
         result = self.puzzle.handle_key(key)
         if result == WRONG:
-            state.spend(config.WRONG_ANSWER_SECONDS)
+            state.spend(self.puzzle.penalty_seconds)
             state.wrong_answers += 1
-            state.say(f"Wrong! -{config.WRONG_ANSWER_SECONDS // 60} min. "
-                      "The task resets.", "bad")
+            state.say(self.puzzle.wrong_message(), "bad")
             self.puzzle.after_wrong()
         elif result == SOLVED:
             self.solve()
+        elif result == GAME_OVER:
+            from scenes.ending import EndingScene   # avoid a circular import
+            state.ending = self.puzzle.ending_kind
+            self.game.reset_to(EndingScene(self.game, state.ending))
 
     def give_hint(self):
         state = self.state

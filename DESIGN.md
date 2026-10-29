@@ -41,39 +41,57 @@ Target playthrough: 5–10 minutes. All text in English.
 
 ## 4. Structure: shared start → branch → shared finish
 
-| Act | Area | Puzzles |
+```
+Platform (P1 keypad)
+  → Concourse (P2 shift lockers: the locker you open = your route)
+      ├─ Tech:  Control room   P3 breakers → P4 wiring      → signal log
+      ├─ Human: Ticket office  P5 stations → P6 Morse        → staff logbook
+      └─ Sneak: Storeroom      P7 crates   → P8 tunnel (CCTV) → tunnel map
+  → Exit hall (P9 signal release, uses the route's document)
+  → Ending
+```
+
+Each run plays 5 puzzles (P1, P2, two route puzzles, P9); 9 are built in total.
+Every puzzle's data is checked by tests (unique answer or solvable).
+Moves inside a puzzle cost no time; only wrong answers, restarts and hints do.
+Leaving a puzzle with Esc keeps its progress.
+
+| Puzzle | Rules | Wrong / fail |
 |---|---|---|
-| 1 (shared) | Platform | P1 Ticket-machine receipt (find poster clues, build override code)<br>P2 Gate: three ways to open it → **chooses the route** |
-| 2 (branch) | Tech: control room | P3 Breaker panel (Lights Out logic)<br>P4 Wire / pipe rotation |
-| 2 (branch) | Human: ticket office | P5 MTR line deduction (code for the safe)<br>P6 Morse broadcast |
-| 2 (branch) | Sneak: service tunnel | P7 Box pushing in the storeroom<br>P8 CCTV stealth (turn-based guard patrol) |
-| 3 (shared) | Exit hall | P9 Final lock using clues from earlier acts |
+| P1 Gate keypad | 3-digit code from 5 logged failed attempts on 3 torn receipt pieces (answer 964; every entry needed) | wrong code −3 min |
+| P2 Shift lockers | 4 lockers (keycard, office key, maintenance key, empty). 4 staff notes, **exactly one lies**. Choose the tool you want, then its locker. One access per shift | wrong locker −3 min |
+| P3 Breakers | 3×3 Lights Out: a switch flips itself and its 4 neighbours; all must be ON within 10 switches | over the limit −3 min, reset |
+| P4 Wiring | Rotate tiles to connect the socket to the shutter motor (needs P3) | none (hints only) |
+| P5 Station safe | Safe code = two staff members' station numbers on the Island Line staff map, deduced from logbook clues (answer 1504; every clue needed) | wrong code −3 min |
+| P6 Morse | Broadcast tape has no letter gaps; pick the one candidate word that matches (answer RETURN) | wrong word −3 min |
+| P7 Crates | Sokoban-style storeroom: push crates to reach the hatch; about half of all pushes lead to dead ends | restart (R) −3 min |
+| P8 Tunnel | Turn-based stealth: 3 rotating cameras, 2 patrolling guards; red = watched now (cannot step there), dot = watched after the move (cannot stop there); safe route 44 moves | caught once: −5 min, back to start; twice: **Alarm** ending |
+| P9 Signal release | Set 4 signals (R/Y/G) using the clues in the route's document (answer G R Y G, unique for every route) | wrong pattern −3 min |
 
-Each run plays about 5 puzzles; 9 puzzles are built in total. "Who is lying"
-(staff notes) is used as the P2 "Human" way, or as P1 if it fits better.
+P2 notes (lockers numbered 1–4 from the left; "left of" = lower number):
+Ming "Locker 3 is the empty one." · Ka-yan "My office key is left of the empty
+locker." · Siu-wai "The keycard is left of the maintenance key." · Uncle Chan
+"The empty locker is left of my maintenance key." → Ming lies:
+1 office key, 2 empty, 3 keycard, 4 maintenance key.
 
-### P1 as built (v0.1): gate keypad
+Route results: Tech P4 and Human P6 open the exit-hall shutter in the
+concourse; Sneak P8 ends inside the exit hall through a floor hatch.
 
-- The gate keypad needs a 3-digit staff code with three different digits (answer `964`).
-- The ticket machine's maintenance log lists 5 earlier failed attempts, each with
-  how many digits were correct (right place / wrong place). The log is torn into
-  3 pieces: ticket machine (2 entries), rubbish bin (2), bench (1).
-- Exactly one code fits all 5 entries, and **every entry is needed** (checked by tests),
-  so the player must explore the whole platform.
-- 4 hints, from "find all pieces" to "the code ends in 4".
-- Fragment 1 (old 03:00 paper ticket) glints rarely in the dark left corner.
+## 5. Fragments and endings
 
-Open question: in this build P1 opens the way to the **concourse**, where the
-three route doors are. P2 (choosing the route) will happen there.
-
-## 5. Endings
+| Fragment | Where |
+|---|---|
+| 1 | Platform: old paper ticket in the dark corner (rare glint) |
+| 2 | Concourse: old newspaper clipping in a corner |
+| 3 | One in each route room, so any route can collect all three |
 
 | Ending | Condition |
 |---|---|
-| Normal escape | Solve P9 before 01:30 |
-| True ending: The 03:00 Train | Also collected **3 hidden fragments** in the same run (hidden corners of shared and branch areas); player chooses whether to board |
+| Normal escape | P9 solved, walk out to the street before 01:30 |
+| True ending A: board the 03:00 train | 3 fragments + P9 solved: a hidden door to "Platform 0" opens; the old train arrives; choose to board |
+| True ending B: walk away | Same, but choose not to board |
 | Trapped | Clock reaches 01:30 |
-| Alarm | Caught during the Sneak route (CCTV / guard) |
+| Alarm | Caught a second time in the tunnel (Sneak route) |
 
 After any ending: press R to restart or Q to quit.
 

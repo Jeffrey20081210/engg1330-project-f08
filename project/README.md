@@ -7,9 +7,22 @@ station seals at 01:30. Explore the station, complete the tasks (mini-puzzles)
 and escape in time. A careful explorer may also find out what the mysterious
 03:00 train really is.
 
-> Status: early working version (v0.1). Platform, Act 1 puzzle, concourse
-> and the "Trapped" ending are playable; the route puzzles and other endings
-> are being built.
+> Status: v0.2, complete playthrough. All three routes, all 9 puzzles and
+> all 5 endings are playable. Balancing and playtesting are next.
+
+## The story in three acts
+
+1. **Platform** - find three torn receipt pieces and open the gate keypad.
+2. **Concourse** - the shift lockers allow one access per shift; the tool
+   you take chooses your route:
+   - **Tech** (control room): breaker panel, then wiring panel
+   - **Human** (ticket office): station-number safe, then Morse broadcast
+   - **Sneak** (storeroom): crate pushing, then a stealth tunnel
+3. **Exit hall** - set the emergency release signals using the document
+   your route gave you, and walk out.
+
+Endings: Escaped, Trapped (01:30), Alarm (caught twice in the tunnel), and
+two true endings for players who find all three hidden fragments.
 
 ## Group
 
@@ -51,6 +64,7 @@ Rules:
 - Each step costs 4 seconds, a wrong answer costs 3 minutes (and resets the
   task), a hint costs 2 minutes. Opening help, the map or items is free.
 - Walk up to things and press E. Tasks are marked with a blinking `!`.
+- Moves inside a task are free; leaving a task with Esc keeps its progress.
 - Win: escape before 01:30. If the clock reaches 01:30 you are trapped.
 - Restart: press R on the ending screen, or run the program again.
 
@@ -84,15 +98,22 @@ Design notes:
 docker compose run --rm game python -m pytest
 ```
 
-The tests cover the puzzle logic (exactly one answer, every clue needed,
-keypad input including boundary and invalid keys), room data (size, reachable
-spots and entrances), the clock (boundary at 01:30), and whole play
-sequences without a terminal (wrong answer, hint, solving, running out of
-time, restarting, quitting).
+The tests (84) cover:
+
+- puzzle logic: every puzzle has exactly one answer (or a route) and every
+  clue is needed - checked by brute force or a breadth-first search, so a
+  change to the puzzle data that breaks it fails the tests
+- input: wrong answers, boundary cases (4th digit, 10th breaker flip,
+  restart before moving) and unknown keys
+- room data: 18 x 80 maps, reachable spots and entrances, real style names
+- the clock boundary at 01:30, the trapped and alarm endings
+- whole playthroughs of all three routes and the true ending, by sending
+  keys to the game without a terminal
 
 ## Known limitations
 
-- Act 2 routes, the exit hall, and the other endings are not built yet.
+- Timing is not balanced yet (a careful run uses about 30 of the 48
+  in-game minutes); the numbers are in `config.py`.
 - Needs a terminal font with box-drawing characters (the default fonts of
   Windows Terminal and macOS Terminal work).
 
@@ -108,7 +129,9 @@ time, restarting, quitting).
 
 - `pyfiglet` (supplied in the course container) for the big titles.
 - Python standard library `curses` for the terminal interface.
-- The puzzle type of Puzzle 1 (finding a lock code from "right place / wrong
-  place" clues) is a well-known logic-puzzle format; our clues and setting
-  are our own.
+- Several puzzles use well-known puzzle types, adapted to the story with our
+  own data: lock-code clues (P1), knights-and-knaves style liar logic (P2),
+  Lights Out (P3), pipe rotation (P4), crate pushing as in Sokoban (P7) and
+  turn-based stealth (P8). Levels, clues and code are our own.
+- Island Line station names and interchanges are public MTR information.
 - Generative AI was used; see `ai_use.md`.
