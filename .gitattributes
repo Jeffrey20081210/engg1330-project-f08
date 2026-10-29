@@ -1,0 +1,2 @@
+# Keep LF line endings so scripts work inside the Linux container.
+* text=auto eol=lf
