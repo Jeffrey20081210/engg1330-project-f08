@@ -11,7 +11,7 @@ Install and start Docker Desktop, then in this folder run:
 
 ```
 docker compose build
-docker compose run --rm game
+docker compose run --rm game python main.py
 ```
 
 The terminal must be at least 80 x 24.
