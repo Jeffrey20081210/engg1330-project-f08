@@ -138,4 +138,4 @@ The tests (84) cover:
 ## More
 
 - Design document: [assets/DESIGN.md](assets/DESIGN.md)
-- AI use declaration: [project/ai_use.md](project/ai_use.md)
+- AI use declaration: [ai_use.md](ai_use.md)
