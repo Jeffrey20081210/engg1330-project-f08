@@ -25,9 +25,9 @@ two true endings for players who find all three hidden fragments.
 
 ENGG1330 Group Project 2026-27, Subclass F, Group 8
 
-- Lo Chit Hei
-- Nimmaraju Venkata Sai Bhargava Rama Anurag
-- Faisal Hamdi Sh Alaeddin
+- Lo Chit Hei (3036895528)
+- Faisal Hamdi Sh Alaeddin (3036684709)
+- Nimmaraju Venkata Sai Bhargava Rama Anurag (3036742238)
 
 Container version: `engg1330-project:2026-v03` (Python 3.13)
 
