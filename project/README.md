@@ -134,8 +134,3 @@ The tests (84) cover:
 - Generative AI was used; see `ai_use.md`.
 - Trailer background music: ["Movie Trailer" from AtlasAudio](https://pixabay.com/music/main-title-movie-trailer-606269/) (Pixabay)
 - Demo video background music: ["Background Music" from NastelBom](https://pixabay.com/music/ambient-background-music-606712/) (Pixabay)
-
-## More
-
-- Design document: [assets/DESIGN.md](assets/DESIGN.md)
-- AI use declaration: [ai_use.md](ai_use.md)
