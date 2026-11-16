@@ -1,4 +1,5 @@
-"""The concourse above the platform: the hub where the three routes split.
+"""
+The concourse above the platform: the hub where the three routes split.
 
 Task: P2, the shift lockers. The key from the locker opens one of the three
 route doors in the back wall. The exit hall (right) opens when the route's

@@ -1,4 +1,5 @@
-"""Act 1: Central station, Platform 1. The player wakes up here.
+"""
+Act 1: Central station, Platform 1. The player wakes up here.
 
 Task: open the platform gate with the staff override code (puzzle
 "gate_code"). The code is hidden in three torn pieces of a receipt.

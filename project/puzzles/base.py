@@ -1,4 +1,5 @@
-"""The interface every puzzle (task) follows.
+"""
+The interface every puzzle (task) follows.
 
 The puzzle scene (scenes/puzzle_scene.py) handles the parts that are the
 same for every puzzle: the frame, hints, time costs and leaving with Esc.
@@ -12,14 +13,14 @@ import config
 
 SOLVED = "solved"
 WRONG = "wrong"
-GAME_OVER = "game_over"     # the run ends at once (e.g. the alarm ending)
+GAME_OVER = "game_over"
 
 
 class Puzzle:
     id = ""
     title = ""
-    hints = []          # shown one at a time when the player presses H
-    help_keys = []      # extra key reminders for the bottom bar
+    hints = []
+    help_keys = []
     penalty_seconds = config.WRONG_ANSWER_SECONDS
     ending_kind = None  # which ending GAME_OVER leads to
 
@@ -52,8 +53,6 @@ class Puzzle:
         """Text shown in the TASK COMPLETE pop-up: list of (text, style)."""
         return [(f"{self.title}: done.", "good")]
 
-
-# Shared key handling for puzzles with a cursor on a grid.
 MOVES = {"w": (-1, 0), "up": (-1, 0), "s": (1, 0), "down": (1, 0),
          "a": (0, -1), "left": (0, -1), "d": (0, 1), "right": (0, 1)}
 PRESS_KEYS = ("e", "space", "enter")

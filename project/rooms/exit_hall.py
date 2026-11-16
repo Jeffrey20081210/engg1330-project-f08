@@ -1,5 +1,7 @@
-"""Act 3: the exit hall. P9 shutter release, the street exit and, for
-players with all three fragments, the hidden door to Platform 0."""
+"""
+Act 3: the exit hall. P9 shutter release, the street exit and, for
+players with all three fragments, the hidden door to Platform 0.
+"""
 
 # Exits: "1" back to the concourse, "2" the street (needs the release),
 # "3" the hidden door in the back wall (needs the release + 3 fragments).

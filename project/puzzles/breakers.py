@@ -1,4 +1,5 @@
-"""Puzzle 3 (Tech route): the breaker panel in the control room.
+"""
+Puzzle 3 (Tech route): the breaker panel in the control room.
 
 A 3 x 3 panel of breakers. Flipping one breaker also flips the breakers
 directly above, below, left and right of it (the "Lights Out" rule). All

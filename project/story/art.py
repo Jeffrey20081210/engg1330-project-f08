@@ -6,7 +6,7 @@ CAR_INNER = 48
 
 
 def build_train_car():
-    """One train car, 50 columns wide and 4 rows tall, with a colour mask."""
+    """One train car, 50 columns wide, 4 rows tall, with a colour mask."""
     art = [
         "┌" + "─" * CAR_INNER + "┐",
         "│" + " [__] [__] ║" * 4 + "│",
@@ -46,8 +46,8 @@ _figlet_cache = {}
 
 
 def big_text(text, fonts=("standard", "small")):
-    """Render text with pyfiglet, using the first font that fits 78 columns.
-
+    """
+    Render text with pyfiglet, using the first font that fits 78 columns.
     Falls back to plain spaced-out letters if pyfiglet is not available.
     """
     if text in _figlet_cache:

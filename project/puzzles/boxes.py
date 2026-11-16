@@ -1,4 +1,5 @@
-"""Puzzle 7 (Sneak route): crates in the storeroom block the floor hatch.
+"""
+Puzzle 7 (Sneak route): crates in the storeroom block the floor hatch.
 
 Push the crates out of the way and stand on the hatch. Crates can only be
 pushed (never pulled), one at a time, and not onto the hatch. A crate pushed

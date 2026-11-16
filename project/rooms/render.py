@@ -18,7 +18,7 @@ def draw_object(canvas, obj, state, frame):
     if not condition_met(obj, state):
         return
     blink = obj.get("blink")
-    if blink == "rare" and frame % 30 >= 4:      # a faint, rare glint
+    if blink == "rare" and frame % 30 >= 4:
         return
     if blink is True and frame % 10 >= 6:
         return

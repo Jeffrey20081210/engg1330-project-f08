@@ -1,4 +1,5 @@
-"""Puzzle 6 (Human route): tonight's password from the midnight broadcast.
+"""
+Puzzle 6 (Human route): tonight's password from the midnight broadcast.
 
 Needs the safe (P5) first: the safe holds the punched tape. The tape shows
 the password in Morse code, but the punch machine dropped the gaps between

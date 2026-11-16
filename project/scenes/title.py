@@ -5,9 +5,7 @@ from engine.ui import draw_key_bar
 from scenes.overlays import HelpOverlay
 from story.art import CAR_WIDTH, big_text, draw_train
 
-# Colours for the title rows, from top to bottom, like station lighting.
 TITLE_COLOURS = ["title", "title", "warn", "warn", "bad", "bad", "bad"]
-
 
 class TitleScene(Scene):
     def handle_key(self, key):

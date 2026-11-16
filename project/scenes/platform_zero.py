@@ -1,7 +1,7 @@
-"""The secret Platform 0: the 03:00 train arrives and the player chooses.
+"""
+The secret Platform 0: the 03:00 train arrives and the player chooses.
 
-Like the intro this is a cut-scene: the animation only decorates. The
-choice (board or walk away) decides which true ending the player gets.
+Like the intro this is a cut-scene: the animation only decorates, the choice (board or walk away) decides which true ending the player gets.
 """
 
 import config
@@ -12,7 +12,7 @@ from rooms.render import draw_room
 from story.art import draw_train
 
 TRAIN_ROW = config.MAP_TOP + 14
-ARRIVE_TICKS = 40          # the train slows down and stops
+ARRIVE_TICKS = 40
 STOP_COL = 4
 OLD_TRAIN = {"b": "old_train", "w": "old_window", "r": "old_stripe",
              "k": "train_wheel"}
@@ -36,7 +36,7 @@ class PlatformZeroScene(Scene):
         elif key == "l":
             self.finish("true_leave")
         elif key == "esc":
-            self.game.pop()          # step back into the exit hall
+            self.game.pop()
 
     def finish(self, kind):
         from scenes.ending import EndingScene

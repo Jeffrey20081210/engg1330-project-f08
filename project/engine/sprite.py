@@ -1,4 +1,5 @@
-"""The player's 3 x 3 coloured sprite.
+"""
+The player's 3 x 3 coloured sprite.
 
 The sprite's position (x, y) is the middle of its feet. Only the feet row is
 used for collisions, so the head and body may overlap the wall behind the

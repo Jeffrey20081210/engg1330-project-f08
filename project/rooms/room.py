@@ -1,4 +1,5 @@
-"""A Room wraps the plain room data (nested dicts and lists) with helpers.
+"""
+A Room wraps the plain room data (nested dicts and lists) with helpers.
 
 Room data keys:
     id, name    identifier and the name shown in the status bar

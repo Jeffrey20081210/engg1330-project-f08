@@ -1,7 +1,7 @@
-"""Intro animation: the last train leaves, the lights go out, the story.
+"""
+Intro animation: the last train leaves, the lights go out.
 
-The animation runs on ticks, but it is only a cut-scene: no game state
-changes until the player presses a key to start.
+The animation runs on ticks, but it is only a cut-scene: no game state changes until the player presses a key to start (turn-based).
 """
 
 import config
@@ -13,8 +13,8 @@ from scenes.explore import ExploreScene
 from story.art import draw_train
 from story.text import INTRO_LINES, START_MESSAGES
 
-TRAIN_ROW = config.MAP_TOP + 14      # the track rows of the platform map
-DEPART_AT = 12                       # ticks before the train starts moving
+TRAIN_ROW = config.MAP_TOP + 14
+DEPART_AT = 12
 LIGHTS_OUT_AT = 42
 TEXT_AT = 56
 TICKS_PER_LINE = 9
@@ -32,7 +32,7 @@ class IntroScene(Scene):
 
     def handle_key(self, key):
         if self.ticks(self.game.frame) < END:
-            self.skipped = True          # first key: jump to the full text
+            self.skipped = True
             return
         self.start_game()
 

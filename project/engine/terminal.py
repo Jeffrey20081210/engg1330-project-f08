@@ -1,4 +1,5 @@
-"""The only module that talks to curses.
+"""
+The only module that talks to curses.
 
 It copies a Canvas to the real screen, turns raw key codes into simple key
 names ("up", "enter", "e", "7" ...) and pauses the game when the terminal is

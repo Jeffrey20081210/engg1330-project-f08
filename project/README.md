@@ -7,9 +7,6 @@ station seals at 01:30. Explore the station, complete the tasks (mini-puzzles)
 and escape in time. A careful explorer may also find out what the mysterious
 03:00 train really is.
 
-> Status: v0.2, complete playthrough. All three routes, all 9 puzzles and
-> all 5 endings are playable. Balancing and playtesting are next.
-
 ## The story in three acts
 
 1. **Platform** - find three torn receipt pieces and open the gate keypad.
@@ -30,7 +27,7 @@ ENGG1330 Group Project 2026-27, Subclass F, Group 8
 
 - Lo Chit Hei
 - Nimmaraju Venkata Sai Bhargava Rama Anurag
-- Faisal Alaeddin
+- Faisal Hamdi Sh Alaeddin
 
 Container version: `engg1330-project:2026-v03` (Python 3.13)
 
@@ -121,9 +118,9 @@ The tests (84) cover:
 
 | Member | Contribution |
 |---|---|
-| Lo Chit Hei | Game design, programming |
-| Nimmaraju Venkata Sai Bhargava Rama Anurag | Testing, feedback (to be completed) |
-| Faisal Alaeddin | Testing, feedback (to be completed) |
+| Lo Chit Hei | Game design, programming, editing videos, documentation |
+| Faisal Hamdi Sh Alaeddin | Testing, voice for demo video, documentation, design of game sequence |
+| Nimmaraju Venkata Sai Bhargava Rama Anurag | Testing, feedback, voice for trailer, documentation |
 
 ## Acknowledgements and sources
 
@@ -135,3 +132,10 @@ The tests (84) cover:
   turn-based stealth (P8). Levels, clues and code are our own.
 - Island Line station names and interchanges are public MTR information.
 - Generative AI was used; see `ai_use.md`.
+- Trailer background music: ["Movie Trailer" from AtlasAudio](https://pixabay.com/music/main-title-movie-trailer-606269/) (Pixabay)
+- Demo video background music: ["Background Music" from NastelBom](https://pixabay.com/music/ambient-background-music-606712/) (Pixabay)
+
+## More
+
+- Design document: [assets/DESIGN.md](assets/DESIGN.md)
+- AI use declaration: [project/ai_use.md](project/ai_use.md)

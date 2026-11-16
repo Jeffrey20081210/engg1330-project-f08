@@ -1,4 +1,5 @@
-"""Puzzle 9 (all routes): the emergency shutter release in the exit hall.
+"""
+Puzzle 9 (all routes): the emergency shutter release in the exit hall.
 
 Four signals must be set to the release pattern. Each route's document
 (signal log, staff logbook or tunnel map) describes the pattern with

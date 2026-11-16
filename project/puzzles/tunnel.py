@@ -1,4 +1,5 @@
-"""Puzzle 8 (Sneak route): sneak through the maintenance tunnel.
+"""
+Puzzle 8 (Sneak route): sneak through the maintenance tunnel.
 
 Turn-based stealth. Every move (or wait) is one tick: cameras turn to the
 next direction in their pattern and guards take one step on their patrol.

@@ -1,4 +1,5 @@
-"""Puzzle 5 (Human route): the ticket office safe.
+"""
+Puzzle 5 (Human route): the ticket office safe.
 
 The safe code is two staff members' home station numbers on the Island
 Line staff map (01 Kennedy Town ... 17 Chai Wan): Ah Fai's number, then

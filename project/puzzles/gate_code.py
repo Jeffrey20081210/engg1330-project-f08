@@ -1,4 +1,5 @@
-"""Puzzle 1: the platform gate keypad.
+"""
+Puzzle 1: the platform gate keypad.
 
 The gate needs a 3-digit staff code made of three different digits. The
 ticket machine's maintenance log printed five earlier failed attempts, each

@@ -1,4 +1,5 @@
-"""Named colour styles.
+"""
+Named colour styles.
 
 Each style is (foreground, background, attributes). Colours are xterm-256
 colour numbers; -1 means the terminal's default colour and None as a

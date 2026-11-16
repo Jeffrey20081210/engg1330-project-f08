@@ -1,4 +1,5 @@
-"""Puzzle 4 (Tech route): the wiring panel. Needs the breakers (P3) first.
+"""
+Puzzle 4 (Tech route): the wiring panel. Needs the breakers (P3) first.
 
 A grid of cable tiles. Pressing E turns the selected tile a quarter turn
 clockwise. Power enters from the socket on the left of row SOURCE_ROW and

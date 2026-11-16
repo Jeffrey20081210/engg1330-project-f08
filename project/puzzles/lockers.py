@@ -1,4 +1,5 @@
-"""Puzzle 2: the shift lockers in the concourse. Solving it picks the route.
+"""
+Puzzle 2: the shift lockers in the concourse. Solving it picks the route.
 
 Four lockers hold the staff keycard (Tech route), the ticket office key
 (Human route), the cleaner's maintenance key (Sneak route), and nothing.

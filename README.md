@@ -19,5 +19,5 @@ The terminal must be at least 80 x 24.
 ## More
 
 - Game rules, controls, tests and credits: [project/README.md](project/README.md)
-- Design document: [DESIGN.md](DESIGN.md)
+- Design document: [assets/DESIGN.md](assets/DESIGN.md)
 - AI use declaration: [project/ai_use.md](project/ai_use.md)

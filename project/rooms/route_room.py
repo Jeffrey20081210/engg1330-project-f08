@@ -1,4 +1,5 @@
-"""The shared shape of the three route rooms (entered from the concourse).
+"""
+The shared shape of the three route rooms (entered from the concourse).
 
 Rows 0-3 back wall, rows 4-15 floor, row 16 bottom wall with the door back
 to the concourse (exit "1") in the middle.

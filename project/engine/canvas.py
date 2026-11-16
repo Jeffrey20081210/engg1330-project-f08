@@ -1,4 +1,5 @@
-"""An 80 x 24 grid of coloured characters that every scene draws into.
+"""
+An 80 x 24 grid of coloured characters that every scene draws into.
 
 Scenes never talk to curses directly. They draw into a Canvas, and the
 terminal copies the finished canvas to the screen once per frame. Because

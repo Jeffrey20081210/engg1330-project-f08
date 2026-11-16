@@ -1,4 +1,5 @@
-"""The scene stack and the main loop.
+"""
+The scene stack and the main loop.
 
 The game is turn-based: the state only changes inside handle_key(), which is
 called once per key press. Between key presses the loop wakes up every tick
